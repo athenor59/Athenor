@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ATHENOR | Centro Pedagógico</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            overflow: hidden;
+            background-color: #f8f9fa;
+        }
+
+        .portada {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("imagenes/athenor.jpg");
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+            background-size: 45% auto;
+            z-index: 1;
+        }
+
+        /* ESTILOS PARA EL MENÚ DE NAVEGACIÓN */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 40px;
+            background-color: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .menu-links {
+            list-style: none;
+            display: flex;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .menu-links > li > a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            font-size: 22px;
+            transition: color 0.3s;
+        }
+
+        .menu-links > li > a:hover {
+            color: #c59b27;
+        }
+
+        .menu-auth {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .menu-auth a {
+            text-decoration: none;
+            color: #333;
+            font-size: 22px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .menu-auth a:hover {
+            color: #c59b27;
+        }
+
+        /* ESTILOS PARA LOS MENÚS DESPLEGABLES */
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #ffffff;
+            min-width: 340px;
+            max-height: 400px;
+            overflow-y: auto;
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.25);
+            border-radius: 10px;
+            z-index: 20;
+            border: 2px solid #c59b27;
+            margin-top: 10px;
+        }
+
+        .dropdown-content.auth-dropdown {
+            left: auto;
+            right: 0;
+            min-width: 280px;
+            padding: 20px;
+        }
+
+        #contacto-menu {
+            border: 2px solid #25d366;
+            max-height: none;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-content .header-dropdown {
+            background-color: #c59b27;
+            color: white;
+            padding: 12px 16px;
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            border-radius: 6px 6px 0 0;
+            margin: -20px -20px 15px -20px;
+        }
+
+        .dropdown-content a {
+            color: #333 !important;
+            padding: 14px 18px !important;
+            text-decoration: none !important;
+            display: block !important;
+            font-size: 16px !important;
+            font-weight: normal !important;
+            border-bottom: 1px solid #f1f1f1 !important;
+            transition: background 0.2s !important;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #fcf6e3 !important;
+            color: #c59b27 !important;
+            font-weight: bold !important;
+        }
+
+        #contacto-menu a:hover {
+            background-color: #e5ffd9 !important;
+            color: #128c7e !important;
+        }
+
+        /* ESTILOS PARA EL FORMULARIO DE INICIO DE SESIÓN */
+        .login-form label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .login-form input:focus {
+            border-color: #c59b27;
+        }
+
+        .login-btn {
+            display: block !important;
+            width: 100%;
+            text-align: center;
+            background-color: #c59b27 !important;
+            color: white !important;
+            padding: 10px 15px !important;
+            font-size: 15px !important;
+            font-weight: bold !important;
+            text-decoration: none !important;
+            border-radius: 20px !important;
+            border: none !important;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(197, 155, 39, 0.3);
+            transition: background 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: #b08720 !important;
+            color: white !important;
+        }
+
+        /* ESTILO PARA DESPLEGABLES DE INFORMACIÓN */
+        .info-dropdown {
+            min-width: 380px;
+            max-width: 420px;
+            padding: 20px;
+            border: 2px solid #c59b27;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(8px);
+        }
+
+        .info-dropdown h3 {
+            font-size: 20px;
+            color: #222;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .info-dropdown p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        .info-btn {
+            display: block !important;
+            width: 100%;
+            text-align: center;
+            background-color: #25d366 !important;
+            color: white !important;
+            padding: 10px 15px !important;
+            font-size: 16px !important;
+            font-weight: bold !important;
+            text-decoration: none !important;
+            border-radius: 20px !important;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+            transition: background 0.3s;
+            border-bottom: none !important;
+        }
+
+        .info-btn:hover {
+            background-color: #1ebe5d !important;
+            color: white !important;
+        }
+
+        #egel-menu {
+            border: 2px solid #c59b27;
+            background: #fffdf7;
+        }
+
+        .egel-badge {
+            background-color: #c59b27;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        #beneficios-menu {
+            border: 2px solid #c59b27;
+            min-width: 400px;
+        }
+
+        .beneficios-list {
+            list-style: none;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .beneficios-list li {
+            font-size: 15px;
+            color: #444;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #promociones-menu {
+            border: 2px solid #c59b27;
+            background: #fffdf7;
+            min-width: 380px;
+        }
+
+        /* ESTILOS ESPECÍFICOS PARA TÉRMINOS LEGALES CON SCROLL */
+        #terminos-menu {
+            max-height: 360px;
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        .terminos-texto {
+            font-size: 13px;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+
+        .terminos-titulo {
+            font-size: 14px;
+            font-weight: bold;
+            color: #222;
+            margin-top: 12px;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- MENÚ DE NAVEGACIÓN SUPERIOR -->
+    <nav>
+        <ul class="menu-links">
+            <!-- INICIO -->
+            <li class="dropdown-container">
+                <a href="#" id="link-inicio">Inicio</a>
+                <div id="inicio-menu" class="dropdown-content info-dropdown">
+                    <h3>Centro Pedagógico ATHENOR</h3>
+                    <p>Impulsa tu futuro profesional con nuestros cursos EGEL PLUS y Licenciaturas en línea con validez oficial. Estudia a tu propio ritmo.</p>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20gustar%C3%ADa%20recibir%20m%C3%A1s%20informaci%C3%B3n%20general%20de%20Athenor" target="_blank" class="info-btn">💬 Contáctanos por WhatsApp</a>
+                </div>
+            </li>
+
+            <!-- ¿QUIÉNES SOMOS? -->
+            <li class="dropdown-container">
+                <a href="#" id="link-nosotros">¿Quiénes somos?</a>
+                <div id="nosotros-menu" class="dropdown-content info-dropdown">
+                    <h3>¿Quiénes Somos?</h3>
+                    <p>Somos una institución comprometida con tu excelencia académica. Brindamos asesoría experta para acreditar tus evaluaciones y cursar licenciaturas en línea con validez oficial.</p>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20acerca%20de%20qui%C3%A9nes%20son%20en%20Athenor" target="_blank" class="info-btn">💬 Conoce más por WhatsApp</a>
+                </div>
+            </li>
+
+            <!-- EGEL PLUS -->
+            <li class="dropdown-container">
+                <a href="#" id="link-egel">EGEL PLUS</a>
+                <div id="egel-menu" class="dropdown-content info-dropdown">
+                    <span class="egel-badge">⚡ Acredita CENEVAL</span>
+                    <h3>Curso Intensivo EGEL PLUS</h3>
+                    <p><strong>¡No arriesgues tu titulación!</strong> Prepárate con nuestro método probado, simuladores de examen y asesores expertos. Asegura tu acreditación a la primera.</p>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20interesa%20inscribirme%20o%20conocer%20los%20detalles%20del%20curso%20EGEL%20PLUS" target="_blank" class="info-btn">🚀 ¡Inscríbete o pide informes aquí!</a>
+                </div>
+            </li>
+            
+            <!-- CARRERAS -->
+            <li class="dropdown-container">
+                <a href="#" id="link-carreras">Carreras ▾</a>
+                <div id="carreras-menu" class="dropdown-content">
+                    <div class="header-dropdown">🎓 Elige tu Licenciatura:</div>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20la%20Licenciatura%20en%20Enfermer%C3%ADa" target="_blank">🩺 Enfermería</a>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20la%20Licenciatura%20en%20Derecho" target="_blank">⚖ Derecho</a>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20la%20Licenciatura%20en%20Pedagog%C3%ADa" target="_blank">📖 Pedagogía</a>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20la%20Licenciatura%20en%20Administraci%C3%B3n" target="_blank">📊 Administración</a>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20la%20Licenciatura%20en%20Nutricion" target="_blank">🥗 Nutrición</a>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20la%20Licenciatura%20en%20Odontologia" target="_blank">🦷 Odontología</a>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20la%20Licenciatura%20en%20Arquitectura" target="_blank">📐 Arquitectura</a>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20la%20Licenciatura%20en%20Fisioterapia" target="_blank">💆‍♂️ Fisioterapia</a>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20la%20Licenciatura%20en%20Veterinaria" target="_blank">🐾 Veterinaria</a>
+                </div>
+            </li>
+
+            <!-- BENEFICIOS -->
+            <li class="dropdown-container">
+                <a href="#" id="link-beneficios">Beneficios</a>
+                <div id="beneficios-menu" class="dropdown-content info-dropdown">
+                    <span class="egel-badge" style="background-color: #25d366;">🔥 Promoción Exclusiva</span>
+                    <h3>Beneficios Athenor</h3>
+                    <ul class="beneficios-list">
+                        <li>🎯 <strong>20% de descuento</strong> aplicable en tu inscripción o curso.</li>
+                        <li>💻 <strong>Estudia en línea</strong> a tu propio ritmo y sin descuidar tu empleo.</li>
+                        <li>📜 <strong>Validez oficial</strong> SEP para respaldar tu crecimiento profesional.</li>
+                        <li>👨‍🏫 <strong>Asesoría personalizada</strong> y constante con expertos en la materia.</li>
+                    </ul>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20quiero%20hacer%20v%C3%A1lido%20el%2020%25%20de%20descuento%20y%20conocer%20m%C3%A1s%20beneficios" target="_blank" class="info-btn">💬 ¡Aplica tu 20% de descuento aquí!</a>
+                </div>
+            </li>
+
+            <!-- PROMOCIONES -->
+            <li class="dropdown-container">
+                <a href="#" id="link-promociones">Promociones</a>
+                <div id="promociones-menu" class="dropdown-content info-dropdown">
+                    <span class="egel-badge" style="background-color: #e67e22;">💥 ¡Aprovecha tu Descuento!</span>
+                    <h3>Promoción Especial de Temporada</h3>
+                    <p>Combina tu <strong>20% de descuento</strong> con facilidades de pago exclusivas al inscribirte esta semana. ¡Haz que tu inversión rinda al máximo!</p>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20quiero%20hacer%20v%C3%A1lido%20mi%20descuento%20y%20aprovechar%20las%20promociones%20de%20Athenor" target="_blank" class="info-btn">💬 ¡Hacer válido mi descuento ahora!</a>
+                </div>
+            </li>
+
+            <!-- TÉRMINOS Y CONDICIONES (CON TEXTO LEGAL INTEGRADO Y SCROLL) -->
+            <li class="dropdown-container">
+                <a href="#" id="link-terminos">Términos</a>
+                <div id="terminos-menu" class="dropdown-content info-dropdown">
+                    <span class="egel-badge" style="background-color: #555;">📋 Legal y Políticas</span>
+                    <h3>Términos y Condiciones</h3>
+                    
+                    <div class="terminos-titulo">1. Objeto y Servicios</div>
+                    <div class="terminos-texto">Centro Pedagógico Athenor ofrece servicios de asesoría académica especializada, cursos de preparación para evaluaciones EGEL PLUS (CENEVAL) y vinculación con programas de licenciatura en línea.</div>
+
+                    <div class="terminos-titulo">2. Validez de Promociones y Descuentos</div>
+                    <div class="terminos-texto">Las becas, promociones temporales y el beneficio del 20% de descuento son válidos únicamente durante el periodo de vigencia indicado y aplicando bajo los lineamientos de inscripción establecidos por nuestros asesores.</div>
+
+                    <div class="terminos-titulo">3. Compromiso de Acreditación EGEL PLUS</div>
+                    <div class="terminos-texto">Nuestros cursos intensivos y simuladores están diseñados para maximizar las probabilidades de éxito del alumno. Sin embargo, la acreditación oficial depende del desempeño individual del sustentante ante la instancia evaluadora correspondiente.</div>
+
+                    <div class="terminos-titulo">4. Privacidad y Protección de Datos</div>
+                    <div class="terminos-texto">Los datos personales proporcionados a través de nuestros formularios o canales digitales son tratados de manera confidencial y utilizados exclusivamente con fines de gestión académica y administrativa institucional.</div>
+                </div>
+            </li>
+            
+            <!-- CONTACTO -->
+            <li class="dropdown-container">
+                <a href="#" id="link-contacto">Contacto ▾</a>
+                <div id="contacto-menu" class="dropdown-content">
+                    <div class="header-dropdown">💬 Elige tu opción en línea:</div>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20interesa%20informaci%C3%B3n%20del%20curso%20en%20l%C3%ADnea%20de%20EGEL%20PLUS" target="_blank">📚 Curso en línea EGEL PLUS</a>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20las%20Licenciaturas%20en%20l%C3%ADnea" target="_blank">🎓 Licenciaturas en línea</a>
+                    <a href="https://wa.me/5214439710469?text=Hola,%20me%20interesa%20informaci%C3%B3n%20general%20sobre%20sus%20cursos%20en%20l%C3%ADnea" target="_blank">❓ Otra duda / General</a>
+                </div>
+            </li>
+        </ul>
+        
+        <!-- ZONA DE AUTENTICACIÓN -->
+        <ul class="menu-auth">
+            <!-- INICIAR SESIÓN -->
+            <li class="dropdown-container">
+                <a href="#" id="link-login">🔐 Iniciar sesión ▾</a>
+                <div id="login-menu" class="dropdown-content auth-dropdown">
+                    <div class="header-dropdown">🔑 Acceso Alumnos</div>
+                    <form class="login-form" onsubmit="event.preventDefault(); alert('Iniciando sesión...'); cerrarTodo();">
+                        <label for="email">Correo electrónico:</label>
+                        <input type="email" id="email" placeholder="tu@correo.com" required>
+                        
+                        <label for="password">Contraseña:</label>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                        
+                        <button type="submit" class="login-btn">Entrar a la plataforma</button>
+                    </form>
+                </div>
+            </li>
+
+            <!-- REGISTRARSE -->
+            <li class="dropdown-container">
+                <a href="#" id="link-registro">📝 Registrarse ▾</a>
+                <div id="registro-menu" class="dropdown-content auth-dropdown">
+                    <div class="header-dropdown">✨ Regístrate con:</div>
+                    <a href="https://accounts.google.com/" target="_blank" onclick="cerrarTodo()">🌐 Cuenta de Google</a>
+                    <a href="https://www.facebook.com/login/" target="_blank" onclick="cerrarTodo()">📘 Cuenta de Facebook</a>
+                    <a href="https://www.instagram.com/accounts/login/" target="_blank" onclick="cerrarTodo()">📸 Cuenta de Instagram</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- IMAGEN DE PORTADA -->
+    <div class="portada"></div>
+
+    <script>
+        const linkInicio = document.getElementById('link-inicio');
+        const inicioMenu = document.getElementById('inicio-menu');
+        
+        const linkNosotros = document.getElementById('link-nosotros');
+        const nosotrosMenu = document.getElementById('nosotros-menu');
+
+        const linkEgel = document.getElementById('link-egel');
+        const egelMenu = document.getElementById('egel-menu');
+
+        const linkCarreras = document.getElementById('link-carreras');
+        const carrerasMenu = document.getElementById('carreras-menu');
+
+        const linkBeneficios = document.getElementById('link-beneficios');
+        const beneficiosMenu = document.getElementById('beneficios-menu');
+
+        const linkPromociones = document.getElementById('link-promociones');
+        const promocionesMenu = document.getElementById('promociones-menu');
+
+        const linkTerminos = document.getElementById('link-terminos');
+        const terminosMenu = document.getElementById('terminos-menu');
+
+        const linkContacto = document.getElementById('link-contacto');
+        const contactoMenu = document.getElementById('contacto-menu');
+
+        const linkLogin = document.getElementById('link-login');
+        const loginMenu = document.getElementById('login-menu');
+
+        const linkRegistro = document.getElementById('link-registro');
+        const registroMenu = document.getElementById('registro-menu');
+
+        // Función para cerrar todos los menús desplegables
+        function cerrarTodo() {
+            inicioMenu.classList.remove('show');
+            nosotrosMenu.classList.remove('show');
+            egelMenu.classList.remove('show');
+            carrerasMenu.classList.remove('show');
+            beneficiosMenu.classList.remove('show');
+            promocionesMenu.classList.remove('show');
+            terminosMenu.classList.remove('show');
+            contactoMenu.classList.remove('show');
+            loginMenu.classList.remove('show');
+            registroMenu.classList.remove('show');
+        }
+
+        // Controladores individuales para cada menú
+        linkInicio.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isOpen = inicioMenu.classList.contains('show');
+            cerrarTodo();
+            if (!isOpen) inicioMenu.classList.add('show');
+        });
+
+        linkNosotros.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isOpen = nosotrosMenu.classList.contains('show');
+            cerrarTodo();
+            if (!isOpen) nosotrosMenu.classList.add('show');
+        });
+
+        linkEgel.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isOpen = egelMenu.classList.contains('show');
+            cerrarTodo();
+            if (!isOpen) egelMenu.classList.add('show');
+        });
+
+        linkCarreras.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isOpen = carrerasMenu.classList.contains('show');
+            cerrarTodo();
+            if (!isOpen) carrerasMenu.classList.add('show');
+        });
+
+        linkBeneficios.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isOpen = beneficiosMenu.classList.contains('show');
+            cerrarTodo();
+            if (!isOpen) beneficiosMenu.classList.add('show');
+        });
+
+        linkPromociones.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isOpen = promocionesMenu.classList.contains('show');
+            cerrarTodo();
+            if (!isOpen) promocionesMenu.classList.add('show');
+        });
+
+        linkTerminos.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isOpen = terminosMenu.classList.contains('show');
+            cerrarTodo();
+            if (!isOpen) terminosMenu.classList.add('show');
+        });
+
+        linkContacto.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isOpen = contactoMenu.classList.contains('show');
+            cerrarTodo();
+            if (!isOpen) contactoMenu.classList.add('show');
+        });
+
+        linkLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isOpen = loginMenu.classList.contains('show');
+            cerrarTodo();
+            if (!isOpen) loginMenu.classList.add('show');
+        });
+
+        linkRegistro.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isOpen = registroMenu.classList.contains('show');
+            cerrarTodo();
+            if (!isOpen) registroMenu.classList.add('show');
+        });
+
+        // Cerrar al hacer clic fuera de cualquier menú
+        window.addEventListener('click', (e) => {
+            if (!linkInicio.contains(e.target) && !inicioMenu.contains(e.target) &&
+                !linkNosotros.contains(e.target) && !nosotrosMenu.contains(e.target) &&
+                !linkEgel.contains(e.target) && !egelMenu.contains(e.target) &&
+                !linkCarreras.contains(e.target) && !carrerasMenu.contains(e.target) &&
+                !linkBeneficios.contains(e.target) && !beneficiosMenu.contains(e.target) &&
+                !linkPromociones.contains(e.target) && !promocionesMenu.contains(e.target) &&
+                !linkTerminos.contains(e.target) && !terminosMenu.contains(e.target) &&
+                !linkContacto.contains(e.target) && !contactoMenu.contains(e.target) &&
+                !linkLogin.contains(e.target) && !loginMenu.contains(e.target) &&
+                !linkRegistro.contains(e.target) && !registroMenu.contains(e.target)) {
+                cerrarTodo();
+            }
+        });
+    </script>
+
+</body>
+</html>
