@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://athenor59.github.io/Athenor/sitemap.xml
